@@ -10,13 +10,15 @@
     "start2": "nodemon --exec babel-node src/question2/index.js",
     "start3": "nodemon --exec babel-node src/question3/index.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/question3/index.js"
+    "serve": "node dist/question3/index.js",
+    "test": "mocha ./test/**/**/*.spec.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5"
+    "@babel/preset-env": "^7.4.5",
+    "mocha": "^6.1.4"
   },
   "dependencies": {
     "chai": "^4.2.0",

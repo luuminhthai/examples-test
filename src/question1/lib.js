@@ -1,7 +1,5 @@
 function store(arr) {
   let text = "";
-  let arrs = [];
-  let str = '';
   for (let i = 0; i < arr.length; i++ ) {
     let tmp = '';
     Object.keys(arr[i]).map(key => {
@@ -14,7 +12,7 @@ function store(arr) {
 }
 
 function load(text) {
-  let tmp = [], tmp2 = [], tmp3 = [], final = [];
+  let tmp = [], tmp3 = [];
   let arrs = text.split('\n');
   return arrs
     .map(item => {
