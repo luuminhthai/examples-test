@@ -6,29 +6,63 @@ class PaymentController {
     this.db = db;
   }
 
+  calculatorDiscountPerProduct(products, rate) {
+    let totalDiscount = 0, totalPrice = 0;
+    products.forEach(item => {
+      totalDiscount += item.price * rate;
+      totalPrice += item.price;
+    })
+    return { totalPrice, totalDiscount };
+  }
+
   getDiscount(bill) {
-    const isEmployee = this.db.Employees.find(item => item.id == bill.userId);
-    if (isEmployee) {
-      return bill.total * DISCOUNT_RATE.IS_EMPLOYEE;
+    let minimum;
+    const { user, store } = bill;
+    if (
+      user.employeeId &&
+      user.employee &&
+      user.employee.storeId === bill.storeId
+    ) {
+      minimum = DISCOUNT_RATE.IS_EMPLOYEE;
     }
-    const isAffiliate = this.db.Stores.find(item => item.id === bill.storeId);
-    if (isAffiliate) {
-      return bill.total * DISCOUNT_RATE.IS_AFFILIATE;
+
+    if (
+      store &&
+      store.ownerId == user.id &&
+      store.id === bill.storeId &&
+      (!minimum || (minimum && minimum > DISCOUNT_RATE.IS_AFFILIATE))
+    ) {
+      minimum = DISCOUNT_RATE.IS_AFFILIATE;
     }
-    const twoYearAgo = moment().subtract(2, 'years');
-    const isCustomerOverTwoYear = this.db.Customers.find(item => item.id === bill.customerId && moment(bill.createdAt) < twoYearAgo)
-    if (isCustomerOverTwoYear) {
-      return bill.total * DISCOUNT_RATE.IS_CUSTOMER_FRIENDLY
+
+    if (
+      user.customerId &&
+      user.customer
+    ) {
+      const twoYearAgo = moment().subtract(2, 'years');
+      if (
+        moment(user.customer.createdAt) <= twoYearAgo && 
+        (!minimum || minimum > DISCOUNT_RATE.IS_CUSTOMER_FRIENDLY)
+      ) {
+        minimum = DISCOUNT_RATE.IS_CUSTOMER_FRIENDLY;
+      }
     }
-    if (bill.total > 100) {
-      return bill.total * (Math.floor(bill.total / 100) * 5);
+
+    let { totalPrice, totalDiscount } = this.calculatorDiscountPerProduct(bill.products, minimum);
+    let checkDiscount = Math.floor(totalPrice / DISCOUNT_RATE.PERCENTAGE.TOTAL) * DISCOUNT_RATE.PERCENTAGE.RATE;
+
+    if (store && store.isGrocery) {
+      return totalPrice;
     }
+
+    return totalPrice - (!isNaN(totalDiscount) && (totalDiscount < checkDiscount) ? totalDiscount : checkDiscount);
   }
   
   calculatorBill(bill) {
-    let discount = bill.total > 0 ? this.getDiscount(bill) : 0;
-    bill.payAmount = bill.total - discount;
-    return bill;
+    if (!bill.user || !bill.products) {
+      return 0;
+    }
+    return this.getDiscount(bill);
   }
 }
 

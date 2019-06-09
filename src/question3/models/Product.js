@@ -4,7 +4,7 @@ class ProductModel {
     this.name = '';
     this.price = 0;
     this.quanity = 0;
-
+    this.storeId = null;
   }
 
   static assign(product) {
@@ -13,6 +13,7 @@ class ProductModel {
     newObj.name = product.name || newObj.name;
     newObj.price = product.price || newObj.price;
     newObj.quanity = product.quanity || newObj.quanity; 
+    newObj.storeId = product.storeId || newObj.storeId;
     return newObj;
   }
 }

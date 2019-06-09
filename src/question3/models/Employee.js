@@ -3,7 +3,7 @@ class Employee {
     this.id = null;
     this.firstName = '';
     this.lastName = '';
-
+    this.storeId = null;
   }
 
   static assign(employee) {
@@ -11,6 +11,7 @@ class Employee {
     newObj.id = employee.id || newObj.id;
     newObj.firstName = employee.firstName || newObj.firstName;
     newObj.lastName = employee.lastName || newObj.lastName; 
+    newObj.storeId = employee.storeId || newObj.storeId;
     return newObj;
   }
 }

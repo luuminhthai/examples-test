@@ -7,11 +7,12 @@
   "license": "MIT",
   "scripts": {
     "start1": "nodemon --exec babel-node src/question1/index.js",
-    "start2": "nodemon --exec babel-node src/question2/index.js",
     "start3": "nodemon --exec babel-node src/question3/index.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/question3/index.js",
-    "test": "mocha ./test/**/**/*.spec.js"
+    "q1": "node dist/question1/index.js",
+    "q3": "node dist/question3/index.js",
+    "test:q1": "mocha ./test/question1/*.spec.js --require @babel/register",
+    "test:q3": "mocha ./test/question3/*.spec.js --require @babel/register"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

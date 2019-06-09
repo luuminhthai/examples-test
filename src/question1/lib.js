@@ -1,32 +1,42 @@
 function store(arr) {
+  if (!arr) return null;
   let text = "";
   for (let i = 0; i < arr.length; i++ ) {
     let tmp = '';
     Object.keys(arr[i]).map(key => {
-      tmp = `${tmp};${key}=${arr[i][key]}`
+      tmp = `${tmp}${tmp ? ';' : ''}${key}=${arr[i][key]}`
     });
-    tmp += '\n';
-    text += tmp.substring(1, tmp.length)
+    if (tmp) {
+      text = text + tmp + '\n';
+    }
   }
-  return text.substring(1, text.length);
+  return text.substring(0, text.length - 1);
+}
+
+function splitObj(str, obj) {
+  let tmp = [];
+  if (str.indexOf('=') != -1) {
+    tmp = str.split('=');
+    obj[tmp[0]] = tmp[1];
+  }
+  return obj;
 }
 
 function load(text) {
-  let tmp = [], tmp3 = [];
+  if (!text) return null;
+  let tmp = [];
   let arrs = text.split('\n');
-  return arrs
-    .map(item => {
-      if (item.indexOf(';') != -1) {
-        tmp = item.split(';');
-        return tmp.map(subArr => {
-          if (subArr.indexOf('=') != -1) {
-            tmp3 = subArr.split('=');
-            return ({ [tmp3[0]]: tmp3[1]})
-          }
-        })
-      }
-    })
-    .filter(item => item);
+  return arrs.map(item => {
+    let obj = {};
+    if (item.indexOf(';') != -1) {
+      tmp = item.split(';');
+      tmp.forEach(subArr => {
+        obj = splitObj(subArr, obj)
+      })
+      return obj;
+    }
+    return splitObj(item, obj)
+  }).filter(item => item);
 }
 
 export {

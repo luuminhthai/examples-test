@@ -1,26 +1,34 @@
 import { store, load } from "./lib";
 
-let arr = [];
-for (let i = 0; i <= 1000000; i++) {
-  arr.push({ [`key${i}`]: `value${i}`, [`key${i+1}A`]: `value${i+1}` });
+function main() {
+  let arr = [];
+  for (let i = 0; i <= 10; i++) {
+    arr.push({ [`key${i}`]: `value${i}`, [`key${i+1}A`]: `value${i+1}` });
+  }
+
+  let startExcute, time, used;
+
+  startExcute = process.hrtime();
+  used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+  const text = store(arr);
+  time = process.hrtime(startExcute);
+  console.log("Execution time: %dms",  time[1] / 1000000);
+  used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+
+  console.log("======= Store array to text=======\n", text);
+
+  startExcute = process.hrtime();
+  used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+  const arrDecode = load(text);
+  time = process.hrtime(startExcute);
+  console.log("Execution time: %dms",  time[1] / 1000000);
+
+  used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+  console.log("======= Decode text=======\n", arrDecode);
 }
 
-let startExcute, time;
-
-startExcute = process.hrtime();
-const text = store(arr);
-console.log(process.memoryUsage());
-time = process.hrtime(startExcute);
-console.log(process.memoryUsage());
-console.log("Execution time: %dms",  time[1] / 1000000);
-
-//console.log("======= Store array to text=======\n", text);
-
-startExcute = process.hrtime();
-console.log(process.memoryUsage());
-const arrDecode = load(text);
-console.log(process.memoryUsage());
-time = process.hrtime(startExcute);
-console.log("Execution time: %dms",  time[1] / 1000000);
-
-//console.log("======= Decode text=======\n", arrDecode);
+main();
