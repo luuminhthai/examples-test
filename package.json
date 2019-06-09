@@ -1,0 +1,29 @@
+{
+  "name": "examples-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/luuminhthai/examples-test.git",
+  "author": "Luu Minh Thai",
+  "license": "MIT",
+  "scripts": {
+    "start1": "nodemon --exec babel-node src/question1/index.js",
+    "start3": "nodemon --exec babel-node src/question3/index.js",
+    "build": "babel src --out-dir dist",
+    "q1": "node dist/question1/index.js",
+    "q3": "node dist/question3/index.js",
+    "test:q1": "mocha ./test/question1/*.spec.js --require @babel/register",
+    "test:q3": "mocha ./test/question3/*.spec.js --require @babel/register"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "mocha": "^6.1.4"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "moment": "^2.24.0",
+    "nodemon": "^1.19.1"
+  }
+}
