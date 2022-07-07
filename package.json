@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nodemon": "^1.19.1"
   }
 }
